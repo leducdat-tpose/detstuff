@@ -4,6 +4,7 @@ Intermediate/
 Saved
 .vscode
 .vs
+.idea
 *.sln
 *.xcodeproj
 .vsconfig
