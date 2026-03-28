@@ -1,0 +1,12 @@
+DerivedDataCache/
+Binaries/
+Intermediate/
+Saved
+.vscode
+.vs
+*.sln
+*.xcodeproj
+.vsconfig
+.clang-format
+.clangd
+Content/EditorReferences
