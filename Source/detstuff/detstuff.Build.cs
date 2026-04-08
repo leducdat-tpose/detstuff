@@ -15,7 +15,10 @@ public class detstuff : ModuleRules
 			"Engine",
 			"InputCore",
 			"EnhancedInput",
-			"AIModule"
+			
+			"AIModule",
+			"StateTreeModule",
+			"GameplayStateTreeModule"
 		});
 
 		PrivateDependencyModuleNames.AddRange(new string[] {  });

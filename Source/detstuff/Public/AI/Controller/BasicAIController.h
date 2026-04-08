@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "AI/Components/DetStateTreeAIComponent.h"
 #include "Runtime/AIModule/Classes/AIController.h"
 #include "BasicAIController.generated.h"
 
@@ -15,8 +16,15 @@ public:
 	ABasicAIController(const FObjectInitializer& ObjectInitializer);
 
 protected:
+
+	virtual void OnPossess(APawn* InPawn) override;
+	
 	virtual void BeginPlay() override;
+
+	virtual void OnUnPossess() override;
 
 public:
 	virtual void Tick(float DeltaTime) override;
+
+	UDetStateTreeAIComponent* GetStateTreeComponent() const;
 };

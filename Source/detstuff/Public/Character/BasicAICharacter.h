@@ -4,7 +4,10 @@
 
 #include "CoreMinimal.h"
 #include "BasicCharacter.h"
+
 #include "BasicAICharacter.generated.h"
+
+class UStateTree;
 
 UCLASS(Blueprintable)
 class DETSTUFF_API ABasicAICharacter : public ABasicCharacter
@@ -19,4 +22,10 @@ protected:
 
 public:
 	virtual void Tick(float DeltaTime) override;
+
+	UFUNCTION(BlueprintCallable)
+	FORCEINLINE UStateTree* GetStateTree() const {return StateTree;}
+	
+	UPROPERTY(EditAnywhere)
+	TObjectPtr<UStateTree> StateTree;
 };
