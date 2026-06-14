@@ -2,33 +2,42 @@
 
 
 #include "detstuff/Public/AI/Controller/BasicAIController.h"
-#include "AI/Components/DetStateTreeAIComponent.h"
+
+#include "AI/Components/BasicBehaviorTreeComponent.h"
+#include "AI/Components/BasicPathFollowingComponent.h"
+#include "AI/Components/BasicPerceptionComponent.h"
+#include "BehaviorTree/BehaviorTree.h"
+#include "BehaviorTree/BehaviorTreeComponent.h"
 #include "Character/BasicAICharacter.h"
 
 // Sets default values
 ABasicAIController::ABasicAIController(const FObjectInitializer& ObjectInitializer)
-	: Super(ObjectInitializer.SetDefaultSubobjectClass<UDetStateTreeAIComponent>("DetStateTreeAIComponent"))
+	: Super(ObjectInitializer
+		.SetDefaultSubobjectClass<UBasicPerceptionComponent>("PerceptionComponent")
+		.SetDefaultSubobjectClass<UBasicPathFollowingComponent>("PathFollowingComponent"))
 {
 	PrimaryActorTick.bCanEverTick = true;
+	bStartAILogicOnPossess = false;
+
+	BrainComponent = CreateDefaultSubobject<UBasicBehaviorTreeComponent>(TEXT("BehaviorTreeComponent"));
+	PerceptionComponent = CreateDefaultSubobject<UBasicPerceptionComponent>(TEXT("PerceptionComponent"));
 }
 
 void ABasicAIController::OnPossess(APawn* InPawn)
 {
 	Super::OnPossess(InPawn);
-	if (!IsValid(InPawn)) return;
-	if (const ABasicAICharacter* Character = Cast<ABasicAICharacter>(InPawn))
-	{
-		if (auto StateTree = Character->GetStateTree())
-		if (auto StateTreeComponent = GetStateTreeComponent())
-		{
-			StateTreeComponent->SetStateTree(StateTree);
-		}
-	}
 }
 
 void ABasicAIController::BeginPlay()
 {
 	Super::BeginPlay();
+	if (const ABasicAICharacter* BasicAICharacter = Cast<ABasicAICharacter>(GetPawn()))
+	{
+		if (const UBehaviorTree* InBT = BasicAICharacter->GetBehaviorTree())
+		{
+			RunBehaviorTree(const_cast<UBehaviorTree*>(InBT));
+		}
+	}
 }
 
 void ABasicAIController::OnUnPossess()
@@ -41,13 +50,13 @@ void ABasicAIController::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 }
 
-UDetStateTreeAIComponent* ABasicAIController::GetStateTreeComponent() const
+UBehaviorTreeComponent* ABasicAIController::GetBehaviorTreeComponent() const
 {
-	if (BrainComponent)
+	if (IsValid(BrainComponent))
 	{
-		if (auto StateTreeComponent = Cast<UDetStateTreeAIComponent>(BrainComponent))
+		if (UBehaviorTreeComponent* BTC = Cast<UBehaviorTreeComponent>(BrainComponent))
 		{
-			return StateTreeComponent;
+			return BTC;
 		}
 	}
 	return nullptr;

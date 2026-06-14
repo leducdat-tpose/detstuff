@@ -3,7 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "AI/Components/DetStateTreeAIComponent.h"
+#include "BehaviorTree/BehaviorTreeComponent.h"
 #include "Runtime/AIModule/Classes/AIController.h"
 #include "BasicAIController.generated.h"
 
@@ -26,5 +26,5 @@ protected:
 public:
 	virtual void Tick(float DeltaTime) override;
 
-	UDetStateTreeAIComponent* GetStateTreeComponent() const;
+	UBehaviorTreeComponent* GetBehaviorTreeComponent() const;
 };
