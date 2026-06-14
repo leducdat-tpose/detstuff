@@ -7,6 +7,7 @@
 
 #include "BasicAICharacter.generated.h"
 
+class UBehaviorTree;
 class UStateTree;
 
 UCLASS(Blueprintable)
@@ -16,16 +17,15 @@ class DETSTUFF_API ABasicAICharacter : public ABasicCharacter
 
 public:
 	ABasicAICharacter(const FObjectInitializer& ObjectInitializer);
+	
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "AI Config")
+	TObjectPtr<UBehaviorTree> BehaviorTree;
 
+	FORCEINLINE const UBehaviorTree* GetBehaviorTree() const { return BehaviorTree; }
+	
 protected:
 	virtual void BeginPlay() override;
 
 public:
 	virtual void Tick(float DeltaTime) override;
-
-	UFUNCTION(BlueprintCallable)
-	FORCEINLINE UStateTree* GetStateTree() const {return StateTree;}
-	
-	UPROPERTY(EditAnywhere)
-	TObjectPtr<UStateTree> StateTree;
 };
